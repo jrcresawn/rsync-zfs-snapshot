@@ -1,4 +1,4 @@
 rsync-backup
 ============
 
-script to push most recent ZFS snapshot to NFS-mounted directory on remote server
+rsync most recent ZFS snapshot to NFS-mounted directory on remote server

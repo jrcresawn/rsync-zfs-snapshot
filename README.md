@@ -1,4 +1,4 @@
-rsync-backup
-============
+rsync-zfs-snapshot
+==================
 
-rsync most recent ZFS snapshot to NFS-mounted directory on remote server
+rsync most recent ZFS snapshot(s) to NFS-mounted directory on remote server

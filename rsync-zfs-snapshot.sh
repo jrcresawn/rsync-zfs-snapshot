@@ -9,7 +9,7 @@ if mkdir /var/run/rsync-zfs-snapshot.lock; then
     echo "Lock succeeded" > /var/log/rsync-zfs-snapshot.log
 
     # zfs-snapshot ZFS filesystems
-    SOURCE=`zfs list -H -t filesystem -o mountpoint $@ | sed 's/$/\/.zfs\/snapshot\/daily.0 /' | sort`
+    SOURCE=`zfs list -H -t filesystem -o mountpoint $@ | grep ^/ | sed 's/$/\/.zfs\/snapshot\/daily.0 /' | sort`
     CMD="rsync -av --delete $SOURCE /backup"
     echo $CMD >> /var/log/rsync-zfs-snapshot.log
     $CMD >> /var/log/rsync-zfs-snapshot.log

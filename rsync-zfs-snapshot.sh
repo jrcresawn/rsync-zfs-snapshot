@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# usage: rsync-zfs-snapshot.sh [ZFS filesystem mountpoint]
-# example: rsync-zfs-snapshot.sh /
+# usage: rsync-zfs-snapshot.sh [ZFS filesystem]
+# example: rsync-zfs-snapshot.sh
 # example crontab entry
 # 30 0 * * * /opt/sbin/rsync-zfs-snapshot.sh
 
@@ -9,8 +9,10 @@ if mkdir /var/run/rsync-zfs-snapshot.lock; then
     echo "Lock succeeded" > /var/log/rsync-zfs-snapshot.log
 
     # zfs-snapshot ZFS filesystems
-    SOURCE=`zfs list -H -t filesystem -o mountpoint $@ | grep ^/ | sed 's/$/\/.zfs\/snapshot\/daily.0 /' | sort`
-    CMD="rsync -avR --delete $SOURCE /backup"
+    for i in `zfs list -H -t filesystem -o name $@` ; do
+	dest=`echo $i | sed 's/\//_/g'`
+	CMD="zfs send $i@daily.0 > /backup/$dest"
+    done
     echo $CMD >> /var/log/rsync-zfs-snapshot.log
     $CMD >> /var/log/rsync-zfs-snapshot.log
 

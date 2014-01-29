@@ -13,6 +13,7 @@ if mkdir /var/run/rsync-zfs-snapshot.lock; then
 	dest=`echo $i | sed 's/\//_/g'`
 	CMD="zfs send $i@daily.0 > /backup/$dest"
     done
+
     echo $CMD >> /var/log/rsync-zfs-snapshot.log
     $CMD >> /var/log/rsync-zfs-snapshot.log
 

@@ -12,10 +12,9 @@ if mkdir /var/run/rsync-zfs-snapshot.lock; then
     for i in `zfs list -H -t filesystem -o name $@` ; do
 	dest=`echo $i | sed 's/\//_/g'`
 	CMD="zfs send $i@daily.0 > /backup/$dest"
+	echo $CMD >> /var/log/rsync-zfs-snapshot.log
+	$CMD >> /var/log/rsync-zfs-snapshot.log
     done
-
-    echo $CMD >> /var/log/rsync-zfs-snapshot.log
-    $CMD >> /var/log/rsync-zfs-snapshot.log
 
     rmdir /var/run/rsync-zfs-snapshot.lock
 else

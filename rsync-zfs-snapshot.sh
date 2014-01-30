@@ -11,9 +11,7 @@ if mkdir /var/run/rsync-zfs-snapshot.lock; then
     # zfs-snapshot ZFS filesystems
     for i in `zfs list -H -t filesystem -o name $@` ; do
 	dest=`echo $i | sed 's/\//_/g'`
-	CMD="zfs send $i@daily.0 > /backup/$dest"
-	echo $CMD >> /var/log/rsync-zfs-snapshot.log
-	$CMD
+	zfs send $i@daily.0 > /backup/$dest
     done
 
     rmdir /var/run/rsync-zfs-snapshot.lock

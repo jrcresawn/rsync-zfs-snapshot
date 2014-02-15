@@ -1,12 +1,12 @@
 #!/bin/bash
 
 # usage: zfs-snapshot-send.sh [ZFS filesystem]
-# example: rsync-zfs-snapshot.sh
+# example: zfs-snapshot-send.sh
 # example crontab entry
-# 00 0 * * 6 /opt/sbin/zfs-snapshot-send.sh
+# 30 0 * * 6 /opt/sbin/zfs-snapshot-send.sh
 
-if mkdir /var/run/rsync-zfs-snapshot.lock; then
-    echo "Lock succeeded" > /var/log/rsync-zfs-snapshot.log
+if mkdir /var/run/zfs-snapshot-send.lock; then
+    echo "Lock succeeded" > /var/log/zfs-snapshot-send.log
 
     # identify ZFS filesystem snapshots and send them to the
     # destination
@@ -15,7 +15,7 @@ if mkdir /var/run/rsync-zfs-snapshot.lock; then
 	nice -n 19 zfs send $i@weekly.0 > /backup/$dest
     done
 
-    rmdir /var/run/rsync-zfs-snapshot.lock
+    rmdir /var/run/zfs-snapshot-send.lock
 else
     echo "Lock failed - exit"
     exit 1

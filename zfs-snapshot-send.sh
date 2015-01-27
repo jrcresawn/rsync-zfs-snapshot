@@ -16,10 +16,14 @@ else
     if mkdir /var/run/zfs-snapshot-send.lock; then
 	echo "Lock succeeded" > /var/log/zfs-snapshot-send.log
 	
+	# manage backup snapshots
+	/opt/sbin/zfs-snapshot.sh rpool1 backup 2
+	/opt/sbin/zfs-snapshot.sh cals backup 2
+
         # identify ZFS filesystem snapshots and send them to the destination
 	for i in `zfs list -H -t filesystem -o name $@` ; do
 	    dest=`echo $i | sed 's/\//_/g'`
-	    nice -n 19 zfs send $i@weekly.0 > /backup/$dest
+	    nice -n 19 zfs send $i@backup.0 > /backup/$dest
 	done
 	
 	rmdir /var/run/zfs-snapshot-send.lock

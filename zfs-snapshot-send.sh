@@ -28,11 +28,29 @@ if [ $scrubinprogress != 0 ] && [ $sendinprogress != 0 ]; then
 	    done
 	
 	    rmdir /var/run/zfs-snapshot-send.lock
+	    echo 'Backup completed.'
+	    echo ''
+	    ls -lrth /backup
+	    echo ''
+	    df -h /backup
 	else
 	    echo "Lock failed - exit"
 	    exit 1
 	fi
     fi
 else
-    echo 'The zpools are busy with other I/O operations this week.'
+    if [ $scrubinprogress == 0 ]; then
+	echo 'A zpool scrub is in progress.'
+	echo ''
+	zpool status
+    fi
+    
+    if [ $sendinprogress == 0 ]; then
+	echo 'A zfs send is in progress based on the presence of this lock directory.'
+	echo ''
+	ls -ld /var/run/zfs-snapshot-send.lock
+    fi
+
+    if [ $scrubinprogress == 0 ] && [ $sendinprogress == 0 ]; then
+	echo 'A zpool scrub and zfs send are in progress concurrently. Expect poor I/O performance. Corrective action is required.'
 fi

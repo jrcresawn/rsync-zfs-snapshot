@@ -53,4 +53,5 @@ else
 
     if [ $scrubinprogress == 0 ] && [ $sendinprogress == 0 ]; then
 	echo 'A zpool scrub and zfs send are in progress concurrently. Expect poor I/O performance. Corrective action is required.'
+    fi
 fi

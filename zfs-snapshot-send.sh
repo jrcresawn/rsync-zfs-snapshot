@@ -5,8 +5,8 @@
 # example crontab entry
 # 00 17 * * 5 /opt/sbin/zfs-snapshot-send.sh
 
-# This expression returns 0 if the week of the year is divisible by 4.
-scrubweek=$(expr `date +%U` % 4)
+# This expression returns 0 if the week of the year is divisible by 8.
+scrubweek=$(expr `date +%U` % 8)
 scrubinprogress=$(zpool status | grep -q 'scan: scrub in progress')$?
 sendinprogress=$(test -d /var/run/zfs-snapshot-send.lock)$?
 

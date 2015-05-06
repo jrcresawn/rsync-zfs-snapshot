@@ -13,6 +13,9 @@ sendinprogress=$(test -d /var/run/zfs-snapshot-send.lock)$?
 if [ $scrubinprogress != 0 ] && [ $sendinprogress != 0 ]; then
     if [ $scrubweek == 0 ]; then  # initiate scrub
 	zpool scrub rpool1 cals
+	echo 'A zpool scrub has begun.'
+	echo ''
+	zpool status
     else  # initiate send
 	if mkdir /var/run/zfs-snapshot-send.lock; then
 	    echo "Lock succeeded" > /var/log/zfs-snapshot-send.log

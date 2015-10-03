@@ -29,7 +29,7 @@ if [ $scrubinprogress != 0 ] && [ $sendinprogress != 0 ]; then
 		dest=`echo $i | sed 's/\//_/g'`
                 # nice -n 19 zfs send $i@backup.0 > /backup/$dest
 		rm /backup/$dest
-		zfs send $i@backup.0 | mbuffer -s 128k -r 10M -R 10M -q -o /backup/$dest
+		zfs send $i@backup.0 | mbuffer -s 128k -m 1G -r 10M -R 10M -q -o /backup/$dest
 	    done
 	
 	    rmdir /var/run/zfs-snapshot-send.lock
